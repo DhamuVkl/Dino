@@ -7,7 +7,7 @@ pygame.init()
 # Constants
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 300
 GROUND_HEIGHT = 50
-GRAVITY = 0.5
+GRAVITY = 0.2       
 JUMP_HEIGHT = 10
 DINO_WIDTH, DINO_HEIGHT = 40, 50
 CACTUS_WIDTH, CACTUS_HEIGHT = 20, 50
@@ -43,6 +43,8 @@ class Dino(pygame.sprite.Sprite):
         self.rect.y = SCREEN_HEIGHT - GROUND_HEIGHT - DINO_HEIGHT
         self.vel_y = 0
         self.on_ground = True
+        self.is_crouching = False
+
 
     def update(self):
         self.vel_y += GRAVITY
@@ -54,11 +56,21 @@ class Dino(pygame.sprite.Sprite):
             self.on_ground = True
         else:
             self.on_ground = False
+        if self.is_crouching:
+            self.rect.height = DINO_HEIGHT // 2
+        else:
+            self.rect.height = DINO_HEIGHT
 
     def jump(self):
         if self.on_ground:
             self.vel_y = -JUMP_HEIGHT
             self.on_ground = False
+
+    def crouch(self):
+        self.is_crouching = True
+
+    def stand_up(self):
+        self.is_crouching = False
 
 class Cactus(pygame.sprite.Sprite):
     def __init__(self):
@@ -97,6 +109,9 @@ Birds = pygame.sprite.Group()
 dino = Dino()
 all_sprites.add(dino)
 
+score = 0
+font = pygame.font.Font(None, 36)
+
 # Game loop
 running = True
 while running:
@@ -107,6 +122,11 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 dino.jump()
+            elif event.key == pygame.K_DOWN:
+                dino.crouch()
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_DOWN:
+                dino.stand_up()
 
     # Update
     all_sprites.update()
@@ -117,22 +137,29 @@ while running:
         running = False
 
     # Spawn cactus
-    if random.randint(0, 100) < 2:
+    if len(cacti) < 3 and random.randint(0, 100) < 2:
         cactus = Cactus()
         all_sprites.add(cactus)
-        cacti.add(cactus) 
+        cacti.add(cactus)
 
     # Spawn Birds
-    if random.randint(0, 100) < 1:
+    if len(bird) < 5 and random.randint(0, 100) < 1:
         bird = Bird()
         all_sprites.add(bird)
         Birds.add(bird)
+
+    # Increase score
+    score += 1
 
     # Draw  
     screen.fill(WHITE)
     pygame.draw.rect(screen, BLACK, (0, SCREEN_HEIGHT - GROUND_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT))
 
     all_sprites.draw(screen)
+
+    # Display score
+    text = font.render("Score: " + str(score // 10), True, BLACK)
+    screen.blit(text, (10, 10))
 
     pygame.display.flip()
     clock.tick(FPS)
