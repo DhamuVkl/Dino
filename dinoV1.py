@@ -77,7 +77,7 @@ class Cactus(pygame.sprite.Sprite):
 class Bird(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.image = Bird_img
+        self.image = bird_img
         self.rect = self.image.get_rect()
         self.rect.x = SCREEN_WIDTH
         self.rect.y = random.randint(20, 100)
@@ -124,9 +124,9 @@ while running:
 
     # Spawn Birds
     if random.randint(0, 100) < 1:
-        Bird = Bird()
-        all_sprites.add(Bird)
-        Birds.add(Bird)
+        bird = bird()
+        all_sprites.add(bird)
+        Birds.add(bird)
 
     # Draw
     screen.fill(WHITE)
