@@ -120,15 +120,15 @@ while running:
     if random.randint(0, 100) < 2:
         cactus = Cactus()
         all_sprites.add(cactus)
-        cacti.add(cactus)
+        cacti.add(cactus) 
 
     # Spawn Birds
     if random.randint(0, 100) < 1:
-        bird = bird()
+        bird = Bird()
         all_sprites.add(bird)
         Birds.add(bird)
 
-    # Draw
+    # Draw  
     screen.fill(WHITE)
     pygame.draw.rect(screen, BLACK, (0, SCREEN_HEIGHT - GROUND_HEIGHT, SCREEN_WIDTH, GROUND_HEIGHT))
 
