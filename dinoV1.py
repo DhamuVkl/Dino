@@ -12,7 +12,7 @@ JUMP_HEIGHT = 10
 DINO_WIDTH, DINO_HEIGHT = 40, 50
 CACTUS_WIDTH, CACTUS_HEIGHT = 20, 50
 BIRD_WIDTH, BIRD_HEIGHT = 60, 20
-FPS = 60
+FPS = 60         
 
 # Colors
 WHITE = (255, 255, 255)
@@ -143,7 +143,7 @@ while running:
         cacti.add(cactus)
 
     # Spawn Birds
-    if len(bird) < 5 and random.randint(0, 100) < 1:
+    if len(Birds) < 5 and random.randint(0, 100) < 1:
         bird = Bird()
         all_sprites.add(bird)
         Birds.add(bird)
